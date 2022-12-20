@@ -257,6 +257,36 @@ impl Deref for MetadataAccount {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct MasterEditionAccount(mpl_token_metadata::state::MasterEditionV2);
+
+impl anchor_lang::AccountDeserialize for MasterEditionAccount {
+    fn try_deserialize_unchecked(buf: &mut &[u8]) -> anchor_lang::Result<Self> {
+        mpl_token_metadata::utils::try_from_slice_checked(
+            buf,
+            mpl_token_metadata::state::Key::MasterEditionV2,
+            mpl_token_metadata::state::MAX_MASTER_EDITION_LEN,
+        )
+        .map(MasterEditionAccount)
+        .map_err(Into::into)
+    }
+}
+
+impl anchor_lang::AccountSerialize for MasterEditionAccount {}
+
+impl anchor_lang::Owner for MasterEditionAccount {
+    fn owner() -> Pubkey {
+        ID
+    }
+}
+
+impl Deref for MasterEditionAccount {
+    type Target = mpl_token_metadata::state::MasterEditionV2;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
 #[derive(Clone)]
 pub struct Metadata;
 
