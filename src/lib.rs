@@ -75,6 +75,7 @@ pub fn create_master_edition_v3<'info>(
 
 pub fn mint_new_edition_from_master_edition_via_token<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, MintNewEditionFromMasterEditionViaToken<'info>>,
+    metadata_mint: Pubkey,
     edition: u64,
 ) -> Result<()> {
     let ix = mpl_token_metadata::instruction::mint_new_edition_from_master_edition_via_token(
@@ -89,7 +90,7 @@ pub fn mint_new_edition_from_master_edition_via_token<'info>(
         *ctx.accounts.token_account.key,
         *ctx.accounts.new_metadata_update_authority.key,
         *ctx.accounts.metadata.key,
-        *ctx.accounts.metadata_mint.key,
+        metadata_mint,
         edition,
     );
     invoke_signed(&ix, &ToAccountInfos::to_account_infos(&ctx), ctx.signer_seeds).map_err(Into::into)
@@ -189,14 +190,6 @@ pub struct MintNewEditionFromMasterEditionViaToken<'info> {
     pub token_program: AccountInfo<'info>,
     pub system_program: AccountInfo<'info>,
     pub rent: AccountInfo<'info>,
-    //
-    // Not actually used by the program but still needed because it's needed
-    // for the pda calculation in the helper. :/
-    //
-    // The better thing to do would be to remove this and have the instruction
-    // helper pass in the `edition_mark_pda` directly.
-    //
-    pub metadata_mint: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
