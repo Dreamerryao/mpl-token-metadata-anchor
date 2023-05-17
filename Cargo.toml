@@ -9,4 +9,4 @@ name = "mpl_token_metadata_anchor"
 
 [dependencies]
 anchor-lang = "0.24.2"
-mpl-token-metadata = { version = "1.2.10", features = ["no-entrypoint"] }
+mpl-token-metadata = { version = "1.4.3", features = ["no-entrypoint"] }
