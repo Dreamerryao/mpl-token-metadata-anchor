@@ -2,7 +2,7 @@ use anchor_lang::{prelude::*, solana_program::program::invoke_signed};
 use mpl_token_metadata::{state::DataV2, ID};
 use std::ops::Deref;
 
-pub fn create_metadata_accounts_v2<'info>(
+pub fn create_metadata_accounts_v3<'info>(
     ctx: CpiContext<'_, '_, '_, 'info, CreateMetadataAccountsV2<'info>>,
     data: DataV2,
     is_mutable: bool,
@@ -17,7 +17,7 @@ pub fn create_metadata_accounts_v2<'info>(
         collection,
         uses,
     } = data;
-    let ix = mpl_token_metadata::instruction::create_metadata_accounts_v2(
+    let ix = mpl_token_metadata::instruction::create_metadata_accounts_v3(
         ID,
         *ctx.accounts.metadata.key,
         *ctx.accounts.mint.key,
@@ -33,6 +33,7 @@ pub fn create_metadata_accounts_v2<'info>(
         is_mutable,
         collection,
         uses,
+        None,
     );
     invoke_signed(&ix, &ToAccountInfos::to_account_infos(&ctx), ctx.signer_seeds).map_err(Into::into)
 }

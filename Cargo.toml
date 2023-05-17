@@ -1,6 +1,6 @@
 [package]
 name = "mpl-token-metadata-anchor"
-version = "0.1.0"
+version = "0.2.0"
 description = "Metadata anchor plugin"
 edition = "2021"
 
